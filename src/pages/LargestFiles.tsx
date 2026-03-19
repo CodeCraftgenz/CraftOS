@@ -1,7 +1,7 @@
 /// Maiores Arquivos — ranking premium
 
-import { useDiskStore } from "../stores/diskStore";
-import { useHistoryStore } from "../stores/historyStore";
+import { useScanResult } from "../stores/diskStore";
+import { useHistoryActions } from "../stores/historyStore";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Button } from "../components/ui/Button";
 import { DataTable, type Column } from "../components/ui/DataTable";
@@ -29,8 +29,8 @@ const TrashIcon = (
 );
 
 export function LargestFiles() {
-  const { scanResult } = useDiskStore();
-  const { addAction, addLog } = useHistoryStore();
+  const scanResult = useScanResult();
+  const { addAction, addLog } = useHistoryActions();
   const files = scanResult?.largest_files ?? [];
 
   const handleOpenLocation = async (path: string) => {

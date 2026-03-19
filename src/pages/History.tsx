@@ -1,6 +1,6 @@
 /// Histórico — log de ações e eventos
 
-import { useHistoryStore } from "../stores/historyStore";
+import { useActions, useLogs, useHistoryActions } from "../stores/historyStore";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Button } from "../components/ui/Button";
 import { DataTable, type Column } from "../components/ui/DataTable";
@@ -15,7 +15,9 @@ const PageIcon = (
 );
 
 export function History() {
-  const { actions, logs, clearActions, clearLogs } = useHistoryStore();
+  const actions = useActions();
+  const logs = useLogs();
+  const { clearActions, clearLogs } = useHistoryActions();
   const [activeTab, setActiveTab] = useState<"actions" | "logs">("actions");
 
   const actionColumns: Column<CleanupAction>[] = [

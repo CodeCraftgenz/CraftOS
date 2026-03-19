@@ -1,7 +1,7 @@
 /// Dashboard principal — visão geral do sistema em tempo real
 
 import { useEffect } from "react";
-import { useSystemStore } from "../stores/systemStore";
+import { useMetrics, useResourceHistory, useSystemActions } from "../stores/systemStore";
 import { MetricCard } from "../components/ui/MetricCard";
 import { ProgressBar } from "../components/ui/ProgressBar";
 import { PageHeader } from "../components/ui/PageHeader";
@@ -49,7 +49,9 @@ const DashIcon = (
 );
 
 export function Dashboard() {
-  const { metrics, history, startMonitoring, stopMonitoring, fetchHistory } = useSystemStore();
+  const metrics = useMetrics();
+  const history = useResourceHistory();
+  const { startMonitoring, stopMonitoring, fetchHistory } = useSystemActions();
 
   useEffect(() => {
     startMonitoring(2000);

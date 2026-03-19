@@ -1,3 +1,6 @@
+pub mod error;
+pub use error::{AppError, AppResult};
+
 /// Modelos de dados do TracOS
 /// Todas as entidades do sistema são definidas aqui
 

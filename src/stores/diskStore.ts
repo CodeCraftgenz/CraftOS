@@ -1,25 +1,21 @@
-/// Store de análise de disco — estilo WizTree
+/// Store de análise de disco — com selectors granulares
 
 import { create } from "zustand";
+import { useShallow } from "zustand/shallow";
 import type { ScanResult, DirectoryNode } from "../types";
 import { scanFolderSizes, fastScan } from "../services/tauri-commands";
 
 interface DiskState {
-  // Árvore de pastas (WizTree style)
   folderTree: DirectoryNode[];
   expandedPaths: Set<string>;
   childrenCache: Record<string, DirectoryNode[]>;
   isLoadingPath: string | null;
 
-  // Scan completo
   scanResult: ScanResult | null;
   isScanning: boolean;
   error: string | null;
-
-  // Disco selecionado
   selectedDisk: string;
 
-  // Ações
   loadFolderSizes: (path: string) => Promise<void>;
   toggleExpand: (path: string) => Promise<void>;
   runFullScan: (path: string, maxDepth?: number) => Promise<void>;
@@ -32,7 +28,6 @@ export const useDiskStore = create<DiskState>((set, get) => ({
   expandedPaths: new Set(),
   childrenCache: {},
   isLoadingPath: null,
-
   scanResult: null,
   isScanning: false,
   error: null,
@@ -53,11 +48,9 @@ export const useDiskStore = create<DiskState>((set, get) => ({
     const newExpanded = new Set(expandedPaths);
 
     if (newExpanded.has(path)) {
-      // Colapsa
       newExpanded.delete(path);
       set({ expandedPaths: newExpanded });
     } else {
-      // Expande — carrega filhos se necessário
       newExpanded.add(path);
       set({ expandedPaths: newExpanded });
 
@@ -96,3 +89,27 @@ export const useDiskStore = create<DiskState>((set, get) => ({
       scanResult: null,
     }),
 }));
+
+// ==========================================
+// SELECTORS GRANULARES
+// ==========================================
+
+export const useFolderTree = () => useDiskStore((s) => s.folderTree);
+export const useExpandedPaths = () => useDiskStore((s) => s.expandedPaths);
+export const useChildrenCache = () => useDiskStore((s) => s.childrenCache);
+export const useIsLoadingPath = () => useDiskStore((s) => s.isLoadingPath);
+export const useScanResult = () => useDiskStore((s) => s.scanResult);
+export const useIsScanning = () => useDiskStore((s) => s.isScanning);
+export const useDiskError = () => useDiskStore((s) => s.error);
+export const useSelectedDisk = () => useDiskStore((s) => s.selectedDisk);
+
+export const useDiskActions = () =>
+  useDiskStore(
+    useShallow((s) => ({
+      loadFolderSizes: s.loadFolderSizes,
+      toggleExpand: s.toggleExpand,
+      runFullScan: s.runFullScan,
+      setSelectedDisk: s.setSelectedDisk,
+      clearResults: s.clearResults,
+    }))
+  );

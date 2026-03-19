@@ -1,8 +1,8 @@
 /// TracOS - Central de Controle Tracbel Agro
 
 mod commands;
-mod models;
-mod services;
+pub mod models;
+pub mod services;
 
 use services::system_service::SystemMonitor;
 

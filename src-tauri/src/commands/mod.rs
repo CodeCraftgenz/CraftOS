@@ -31,18 +31,21 @@ pub fn get_resource_history(
 #[tauri::command]
 pub fn scan_folder_sizes(root_path: String, depth: Option<usize>) -> Result<Vec<DirectoryNode>, String> {
     scan_service::scan_folder_sizes(&root_path, depth.unwrap_or(15))
+        .map_err(|e| e.to_string())
 }
 
 /// Scan completo rápido com passada única (para maiores arquivos e estatísticas)
 #[tauri::command]
 pub fn fast_scan(root_path: String, max_depth: Option<usize>) -> Result<ScanResult, String> {
     scan_service::fast_scan(&root_path, max_depth.unwrap_or(8))
+        .map_err(|e| e.to_string())
 }
 
 /// Scan rápido de primeiro nível (leve, para navegação)
 #[tauri::command]
 pub fn quick_scan(path: String) -> Result<Vec<DirectoryNode>, String> {
     scan_service::scan_folder_sizes(&path, 1)
+        .map_err(|e| e.to_string())
 }
 
 // ==========================================
@@ -52,26 +55,31 @@ pub fn quick_scan(path: String) -> Result<Vec<DirectoryNode>, String> {
 #[tauri::command]
 pub fn delete_to_trash(path: String) -> Result<CleanupAction, String> {
     FileManager::delete_to_trash(&path)
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 pub fn delete_permanent(path: String) -> Result<CleanupAction, String> {
     FileManager::delete_permanent(&path)
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 pub fn move_file(source: String, destination: String) -> Result<CleanupAction, String> {
     FileManager::move_file(&source, &destination)
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 pub fn clean_temp_directory(path: String) -> Result<CleanupAction, String> {
     FileManager::clean_temp_directory(&path)
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 pub fn open_in_explorer(path: String) -> Result<(), String> {
     FileManager::open_in_explorer(&path)
+        .map_err(|e| e.to_string())
 }
 
 // ==========================================

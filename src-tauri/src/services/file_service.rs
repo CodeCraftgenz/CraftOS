@@ -2,6 +2,7 @@
 /// Responsável por operações seguras de exclusão, movimentação e limpeza
 
 use crate::models::*;
+use crate::models::{AppError, AppResult};
 use chrono::Utc;
 use std::fs;
 use std::path::Path;
@@ -12,10 +13,10 @@ pub struct FileManager;
 
 impl FileManager {
     /// Exclui arquivo enviando para a lixeira (modo seguro)
-    pub fn delete_to_trash(path: &str) -> Result<CleanupAction, String> {
+    pub fn delete_to_trash(path: &str) -> AppResult<CleanupAction> {
         let file_path = Path::new(path);
         if !file_path.exists() {
-            return Err(format!("Arquivo não encontrado: {}", path));
+            return Err(AppError::PathNotFound(path.to_string()));
         }
 
         let size = if file_path.is_file() {
@@ -24,7 +25,7 @@ impl FileManager {
             Self::calculate_dir_size(path)
         };
 
-        trash::delete(file_path).map_err(|e| format!("Erro ao mover para lixeira: {}", e))?;
+        trash::delete(file_path).map_err(|e| AppError::DeleteError(e.to_string()))?;
 
         Ok(CleanupAction {
             id: Uuid::new_v4().to_string(),
@@ -38,10 +39,10 @@ impl FileManager {
     }
 
     /// Exclui arquivo permanentemente
-    pub fn delete_permanent(path: &str) -> Result<CleanupAction, String> {
+    pub fn delete_permanent(path: &str) -> AppResult<CleanupAction> {
         let file_path = Path::new(path);
         if !file_path.exists() {
-            return Err(format!("Arquivo não encontrado: {}", path));
+            return Err(AppError::PathNotFound(path.to_string()));
         }
 
         let size = if file_path.is_file() {
@@ -51,11 +52,9 @@ impl FileManager {
         };
 
         if file_path.is_dir() {
-            fs::remove_dir_all(file_path)
-                .map_err(|e| format!("Erro ao excluir diretório: {}", e))?;
+            fs::remove_dir_all(file_path)?;
         } else {
-            fs::remove_file(file_path)
-                .map_err(|e| format!("Erro ao excluir arquivo: {}", e))?;
+            fs::remove_file(file_path)?;
         }
 
         Ok(CleanupAction {
@@ -70,10 +69,10 @@ impl FileManager {
     }
 
     /// Move arquivo para outro local
-    pub fn move_file(source: &str, destination: &str) -> Result<CleanupAction, String> {
+    pub fn move_file(source: &str, destination: &str) -> AppResult<CleanupAction> {
         let source_path = Path::new(source);
         if !source_path.exists() {
-            return Err(format!("Arquivo origem não encontrado: {}", source));
+            return Err(AppError::PathNotFound(source.to_string()));
         }
 
         let size = if source_path.is_file() {
@@ -82,8 +81,7 @@ impl FileManager {
             Self::calculate_dir_size(source)
         };
 
-        fs::rename(source, destination)
-            .map_err(|e| format!("Erro ao mover arquivo: {}", e))?;
+        fs::rename(source, destination).map_err(|e| AppError::MoveError(e.to_string()))?;
 
         Ok(CleanupAction {
             id: Uuid::new_v4().to_string(),
@@ -97,10 +95,10 @@ impl FileManager {
     }
 
     /// Limpa diretório temporário
-    pub fn clean_temp_directory(path: &str) -> Result<CleanupAction, String> {
+    pub fn clean_temp_directory(path: &str) -> AppResult<CleanupAction> {
         let dir = Path::new(path);
         if !dir.exists() || !dir.is_dir() {
-            return Err(format!("Diretório não encontrado: {}", path));
+            return Err(AppError::PathNotFound(path.to_string()));
         }
 
         let mut total_freed = 0u64;
@@ -154,7 +152,7 @@ impl FileManager {
     }
 
     /// Abre localização do arquivo no explorador do sistema
-    pub fn open_in_explorer(path: &str) -> Result<(), String> {
+    pub fn open_in_explorer(path: &str) -> AppResult<()> {
         let file_path = Path::new(path);
         let dir = if file_path.is_dir() {
             path.to_string()
@@ -167,8 +165,7 @@ impl FileManager {
 
         std::process::Command::new("explorer")
             .arg(&dir)
-            .spawn()
-            .map_err(|e| format!("Erro ao abrir explorador: {}", e))?;
+            .spawn()?;
 
         Ok(())
     }

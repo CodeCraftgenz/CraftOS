@@ -1,7 +1,8 @@
-/// Gráfico de CPU em tempo real — visual premium
+/// Gráfico de CPU em tempo real — usa config compartilhada
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { formatTime } from "../../utils/format";
+import { chartColors, tooltipStyle, gridProps, xAxisProps, yAxisProps, activeDotStyle } from "./chartConfig";
 
 interface CpuChartProps {
   data: Array<{ timestamp: number; cpu: number }>;
@@ -20,40 +21,20 @@ export function CpuChart({ data }: CpuChartProps) {
       </h3>
       <ResponsiveContainer width="100%" height={220}>
         <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-          <XAxis
-            dataKey="time"
-            tick={{ fontSize: 10, fill: "#71717a" }}
-            axisLine={{ stroke: "#27272a" }}
-            tickLine={false}
-          />
-          <YAxis
-            domain={[0, 100]}
-            tick={{ fontSize: 10, fill: "#71717a" }}
-            axisLine={false}
-            tickLine={false}
-            unit="%"
-            width={40}
-          />
+          <CartesianGrid {...gridProps} />
+          <XAxis dataKey="time" {...xAxisProps} />
+          <YAxis domain={[0, 100]} unit="%" {...yAxisProps} />
           <Tooltip
-            contentStyle={{
-              backgroundColor: "#18181b",
-              border: "1px solid #27272a",
-              borderRadius: "10px",
-              fontSize: "12px",
-              color: "#fafafa",
-              boxShadow: "0 10px 15px -3px rgba(0,0,0,0.5)",
-            }}
-            itemStyle={{ color: "#22c55e" }}
-            labelStyle={{ color: "#a1a1aa", fontSize: "11px", marginBottom: "4px" }}
+            {...tooltipStyle}
+            itemStyle={{ color: chartColors.cpu }}
           />
           <Line
             type="monotone"
             dataKey="cpu"
-            stroke="#22c55e"
+            stroke={chartColors.cpu}
             strokeWidth={2}
             dot={false}
-            activeDot={{ r: 4, fill: "#22c55e", stroke: "#0f0f12", strokeWidth: 2 }}
+            activeDot={activeDotStyle(chartColors.cpu)}
             animationDuration={300}
           />
         </LineChart>

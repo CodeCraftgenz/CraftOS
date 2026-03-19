@@ -2,6 +2,7 @@
 /// Scan rápido por nível com cálculo recursivo de tamanho
 
 use crate::models::*;
+use crate::models::{AppError, AppResult};
 use chrono::Utc;
 use std::fs;
 use std::path::Path;
@@ -21,13 +22,13 @@ fn calc_dir_size(path: &Path, max_depth: usize) -> u64 {
 }
 
 /// Scan das pastas de primeiro nível com tamanho recursivo de cada uma
-pub fn scan_folder_sizes(root_path: &str, depth: usize) -> Result<Vec<DirectoryNode>, String> {
+pub fn scan_folder_sizes(root_path: &str, depth: usize) -> AppResult<Vec<DirectoryNode>> {
     let root = Path::new(root_path);
     if !root.exists() {
-        return Err(format!("Caminho não encontrado: {}", root_path));
+        return Err(AppError::PathNotFound(root_path.to_string()));
     }
 
-    let entries = fs::read_dir(root).map_err(|e| format!("Erro ao ler diretório: {}", e))?;
+    let entries = fs::read_dir(root)?;
 
     let mut dirs: Vec<DirectoryNode> = Vec::new();
     let mut root_files_size = 0u64;
@@ -88,10 +89,10 @@ pub fn scan_folder_sizes(root_path: &str, depth: usize) -> Result<Vec<DirectoryN
 pub fn fast_scan(
     root_path: &str,
     max_depth: usize,
-) -> Result<ScanResult, String> {
+) -> AppResult<ScanResult> {
     let root = Path::new(root_path);
     if !root.exists() {
-        return Err(format!("Caminho não encontrado: {}", root_path));
+        return Err(AppError::PathNotFound(root_path.to_string()));
     }
 
     let job_id = Uuid::new_v4().to_string();

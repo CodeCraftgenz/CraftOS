@@ -1,7 +1,7 @@
 /// Monitor de Recursos — gráficos em tempo real
 
 import { useEffect } from "react";
-import { useSystemStore } from "../stores/systemStore";
+import { useMetrics, useResourceHistory, useSystemActions } from "../stores/systemStore";
 import { PageHeader } from "../components/ui/PageHeader";
 import { CpuChart } from "../components/charts/CpuChart";
 import { RamChart } from "../components/charts/RamChart";
@@ -15,7 +15,9 @@ const PageIcon = (
 );
 
 export function ResourceMonitor() {
-  const { metrics, history, startMonitoring, stopMonitoring, fetchHistory } = useSystemStore();
+  const metrics = useMetrics();
+  const history = useResourceHistory();
+  const { startMonitoring, stopMonitoring, fetchHistory } = useSystemActions();
 
   useEffect(() => {
     startMonitoring(1000);

@@ -1,9 +1,12 @@
 /// Análise de Disco — estilo WizTree com árvore de pastas navegável
 
 import { useState, useEffect } from "react";
-import { useDiskStore } from "../stores/diskStore";
-import { useSystemStore } from "../stores/systemStore";
-import { useHistoryStore } from "../stores/historyStore";
+import {
+  useFolderTree, useExpandedPaths, useChildrenCache, useIsLoadingPath,
+  useIsScanning, useDiskError, useScanResult, useSelectedDisk, useDiskActions,
+} from "../stores/diskStore";
+import { useMetrics } from "../stores/systemStore";
+import { useHistoryActions } from "../stores/historyStore";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Button } from "../components/ui/Button";
 import { ProgressBar } from "../components/ui/ProgressBar";
@@ -152,8 +155,11 @@ function FolderTree({
   parentSize: number;
   depth: number;
 }) {
-  const { expandedPaths, childrenCache, isLoadingPath, toggleExpand } = useDiskStore();
-  const { addLog } = useHistoryStore();
+  const expandedPaths = useExpandedPaths();
+  const childrenCache = useChildrenCache();
+  const isLoadingPath = useIsLoadingPath();
+  const { toggleExpand } = useDiskActions();
+  const { addLog } = useHistoryActions();
 
   const handleOpen = async (path: string) => {
     try {
@@ -197,12 +203,15 @@ function FolderTree({
 }
 
 export function DiskAnalysis() {
-  const {
-    folderTree, isLoadingPath, isScanning, error, scanResult,
-    selectedDisk, setSelectedDisk, loadFolderSizes, runFullScan, clearResults,
-  } = useDiskStore();
-  const { metrics } = useSystemStore();
-  const { addLog } = useHistoryStore();
+  const folderTree = useFolderTree();
+  const isLoadingPath = useIsLoadingPath();
+  const isScanning = useIsScanning();
+  const error = useDiskError();
+  const scanResult = useScanResult();
+  const selectedDisk = useSelectedDisk();
+  const { loadFolderSizes, runFullScan, setSelectedDisk, clearResults } = useDiskActions();
+  const metrics = useMetrics();
+  const { addLog } = useHistoryActions();
 
   const [activeView, setActiveView] = useState<"tree" | "stats">("tree");
   const [customPath, setCustomPath] = useState("");

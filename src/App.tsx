@@ -1,7 +1,8 @@
-/// TracOS — Central de Controle Tracbel Agro
+/// CraftOS — Central de Controle Tracbel Agro
 
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { MainLayout } from "./components/layout/MainLayout";
+import { AppToaster } from "./components/ui/Toast";
 import { Dashboard } from "./pages/Dashboard";
 import { DiskAnalysis } from "./pages/DiskAnalysis";
 import { TreemapView } from "./pages/TreemapView";
@@ -28,6 +29,7 @@ function App() {
           <Route path="/help" element={<Help />} />
         </Route>
       </Routes>
+      <AppToaster />
     </HashRouter>
   );
 }

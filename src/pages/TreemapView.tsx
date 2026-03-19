@@ -1,7 +1,7 @@
 /// Visualização Treemap — mapa visual de disco
 
 import { useState } from "react";
-import { useDiskStore } from "../stores/diskStore";
+import { useScanResult, useIsScanning, useDiskActions } from "../stores/diskStore";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Button } from "../components/ui/Button";
 import { Treemap } from "../components/charts/Treemap";
@@ -22,7 +22,9 @@ const SearchIcon = (
 );
 
 export function TreemapView() {
-  const { scanResult, isScanning, startScan } = useDiskStore();
+  const scanResult = useScanResult();
+  const isScanning = useIsScanning();
+  const { runFullScan } = useDiskActions();
   const [scanPath, setScanPath] = useState("C:\\");
   const [breadcrumb, setBreadcrumb] = useState<DirectoryNode[]>([]);
 
@@ -40,7 +42,7 @@ export function TreemapView() {
 
   const handleScan = async () => {
     setBreadcrumb([]);
-    await startScan(scanPath, 4);
+    await runFullScan(scanPath, 4);
   };
 
   return (

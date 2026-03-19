@@ -1,14 +1,13 @@
-/// Store de histórico de ações e logs
+/// Store de histórico — com selectors granulares
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { useShallow } from "zustand/shallow";
 import type { CleanupAction, AppLog, LogLevel } from "../types";
 
 interface HistoryState {
   actions: CleanupAction[];
   logs: AppLog[];
-
-  // Ações
   addAction: (action: CleanupAction) => void;
   addLog: (level: LogLevel, message: string, context?: string) => void;
   clearActions: () => void;
@@ -17,7 +16,7 @@ interface HistoryState {
 
 export const useHistoryStore = create<HistoryState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       actions: [],
       logs: [],
 
@@ -43,8 +42,23 @@ export const useHistoryStore = create<HistoryState>()(
       clearActions: () => set({ actions: [] }),
       clearLogs: () => set({ logs: [] }),
     }),
-    {
-      name: "tracos-history",
-    }
+    { name: "craftos-history" }
   )
 );
+
+// ==========================================
+// SELECTORS
+// ==========================================
+
+export const useActions = () => useHistoryStore((s) => s.actions);
+export const useLogs = () => useHistoryStore((s) => s.logs);
+
+export const useHistoryActions = () =>
+  useHistoryStore(
+    useShallow((s) => ({
+      addAction: s.addAction,
+      addLog: s.addLog,
+      clearActions: s.clearActions,
+      clearLogs: s.clearLogs,
+    }))
+  );

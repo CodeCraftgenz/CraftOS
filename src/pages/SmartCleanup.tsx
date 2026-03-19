@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Button } from "../components/ui/Button";
-import { useHistoryStore } from "../stores/historyStore";
-import { useDiskStore } from "../stores/diskStore";
+import { useHistoryActions } from "../stores/historyStore";
+import { useScanResult } from "../stores/diskStore";
 import { getCleanupSuggestions, cleanTempDirectory } from "../services/tauri-commands";
 import { formatBytes } from "../utils/format";
 import type { CleanupSuggestion } from "../types";
@@ -25,8 +25,8 @@ export function SmartCleanup() {
   const [suggestions, setSuggestions] = useState<CleanupSuggestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [cleaning, setCleaning] = useState<string | null>(null);
-  const { addAction, addLog } = useHistoryStore();
-  const { scanResult } = useDiskStore();
+  const { addAction, addLog } = useHistoryActions();
+  const scanResult = useScanResult();
 
   const fetchSuggestions = async () => {
     setLoading(true);
