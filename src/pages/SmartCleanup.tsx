@@ -156,7 +156,8 @@ export function SmartCleanup() {
     } finally {
       setLoading(false);
     }
-  }, [addLog]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     fetchSuggestions();

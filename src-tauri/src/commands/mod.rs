@@ -121,7 +121,7 @@ fn dir_size(dir: &str, max_depth: usize) -> u64 {
 }
 
 #[tauri::command]
-pub fn get_cleanup_suggestions() -> Result<Vec<CleanupSuggestion>, String> {
+pub async fn get_cleanup_suggestions() -> Result<Vec<CleanupSuggestion>, String> {
     let mut suggestions = Vec::new();
     let user_profile = std::env::var("USERPROFILE").unwrap_or_default();
     let local_appdata = std::env::var("LOCALAPPDATA").unwrap_or_default();
@@ -228,7 +228,7 @@ pub fn get_cleanup_suggestions() -> Result<Vec<CleanupSuggestion>, String> {
         let mut log_size = 0u64;
 
         for entry in walkdir::WalkDir::new(&logs_dir)
-            .max_depth(3)
+            .max_depth(2)
             .into_iter()
             .filter_map(|e| e.ok())
             .filter(|e| {
@@ -301,7 +301,7 @@ pub fn get_cleanup_suggestions() -> Result<Vec<CleanupSuggestion>, String> {
 
 /// Retorna detalhes dos arquivos/pastas em um caminho específico
 #[tauri::command]
-pub fn get_category_details(category_path: String) -> Result<Vec<FileDetail>, String> {
+pub async fn get_category_details(category_path: String) -> Result<Vec<FileDetail>, String> {
     let path = std::path::Path::new(&category_path);
     if !path.exists() {
         return Err(format!("Caminho não encontrado: {}", category_path));
