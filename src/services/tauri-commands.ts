@@ -9,6 +9,7 @@ import type {
   CleanupAction,
   CleanupSuggestion,
   UserSettings,
+  FileDetail,
 } from "../types";
 
 // ==========================================
@@ -80,4 +81,8 @@ export async function getDefaultSettings(): Promise<UserSettings> {
 
 export async function getCleanupSuggestions(): Promise<CleanupSuggestion[]> {
   return invoke<CleanupSuggestion[]>("get_cleanup_suggestions");
+}
+
+export async function getCategoryDetails(categoryPath: string): Promise<FileDetail[]> {
+  return invoke<FileDetail[]>("get_category_details", { categoryPath });
 }

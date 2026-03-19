@@ -78,7 +78,7 @@ export function Dashboard() {
   }
 
   return (
-    <div className="flex flex-col gap-8 animate-fade-in">
+    <div className="flex flex-col gap-6 animate-fade-in">
       <PageHeader
         title="Dashboard"
         subtitle={`${metrics.hostname} — ${metrics.os_name} ${metrics.os_version}`}
@@ -175,7 +175,7 @@ export function Dashboard() {
           <h3 className="text-[11px] font-semibold text-text-muted uppercase tracking-[0.06em] mb-4">
             Utilização por Core
           </h3>
-          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2">
+          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3">
             {metrics.cpu_per_core.map((usage, i) => (
               <div key={i} className="p-2.5 bg-bg-app/50 rounded-xl border border-border/50 text-center">
                 <p className="text-[10px] text-text-muted mb-1.5">Core {i}</p>

@@ -106,13 +106,13 @@ export function Sidebar() {
             <p className="text-[10px] font-semibold text-text-muted uppercase tracking-[0.08em] px-3 mb-1.5">
               {groupName}
             </p>
-            <div className="space-y-0.5">
+            <div className="space-y-1">
               {items.map((item) => (
                 <NavLink
                   key={item.path}
                   to={item.path}
                   className={({ isActive }) =>
-                    `group flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 ${
+                    `group flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-150 ${
                       isActive
                         ? "bg-primary/15 text-primary-light"
                         : "text-text-secondary hover:bg-bg-card-hover hover:text-text-primary"

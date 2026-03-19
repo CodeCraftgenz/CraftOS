@@ -194,6 +194,16 @@ pub struct CleanupSuggestion {
     pub risk_level: String,
 }
 
+/// Detalhe de arquivo/pasta para exploração de categorias de limpeza
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FileDetail {
+    pub path: String,
+    pub name: String,
+    pub size: u64,
+    pub is_dir: bool,
+    pub modified_at: i64,
+}
+
 /// Resultado do scan com estatísticas
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanResult {

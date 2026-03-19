@@ -75,7 +75,7 @@ impl FileManager {
             return Err(AppError::PathNotFound(source.to_string()));
         }
 
-        let size = if source_path.is_file() {
+        let _size = if source_path.is_file() {
             fs::metadata(source_path).map(|m| m.len()).unwrap_or(0)
         } else {
             Self::calculate_dir_size(source)

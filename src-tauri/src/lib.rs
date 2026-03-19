@@ -26,6 +26,7 @@ pub fn run() {
             commands::open_in_explorer,
             commands::get_default_settings,
             commands::get_cleanup_suggestions,
+            commands::get_category_details,
         ])
         .run(tauri::generate_context!())
         .expect("Erro ao iniciar TracOS");

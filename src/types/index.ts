@@ -100,6 +100,14 @@ export interface CleanupSuggestion {
   risk_level: string;
 }
 
+export interface FileDetail {
+  path: string;
+  name: string;
+  size: number;
+  is_dir: boolean;
+  modified_at: number;
+}
+
 export interface ScanResult {
   job: ScanJob;
   root: DirectoryNode;
