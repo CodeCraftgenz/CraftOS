@@ -1,0 +1,263 @@
+@import "tailwindcss";
+
+/* ==========================================
+   TracOS — Design System Tracbel Agro
+   UX/UI Senior — Visual corporativo premium
+   ========================================== */
+
+@theme {
+  /* Paleta principal */
+  --color-primary: #16a34a;
+  --color-primary-light: #22c55e;
+  --color-primary-dark: #15803d;
+  --color-primary-50: #f0fdf4;
+  --color-primary-900: #14532d;
+
+  --color-accent: #10b981;
+  --color-accent-light: #34d399;
+
+  /* Status */
+  --color-warning: #f59e0b;
+  --color-warning-dark: #d97706;
+  --color-warning-light: #fbbf24;
+  --color-danger: #ef4444;
+  --color-danger-dark: #dc2626;
+  --color-danger-light: #f87171;
+  --color-info: #3b82f6;
+  --color-info-dark: #2563eb;
+  --color-info-light: #60a5fa;
+  --color-success: #10b981;
+
+  /* Superfícies — Paleta escura sofisticada */
+  --color-bg-app: #09090b;
+  --color-bg-sidebar: #0c0c0f;
+  --color-bg-main: #0f0f12;
+  --color-bg-card: #18181b;
+  --color-bg-card-hover: #1f1f23;
+  --color-bg-elevated: #27272a;
+  --color-bg-input: #18181b;
+  --color-bg-overlay: rgba(0, 0, 0, 0.6);
+
+  /* Bordas */
+  --color-border: #27272a;
+  --color-border-light: #3f3f46;
+  --color-border-focus: #16a34a;
+
+  /* Texto */
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #a1a1aa;
+  --color-text-muted: #71717a;
+  --color-text-inverse: #09090b;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+  --shadow-glow-green: 0 0 20px rgba(22, 163, 74, 0.15);
+  --shadow-glow-red: 0 0 20px rgba(239, 68, 68, 0.15);
+
+  /* Espaçamento */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+}
+
+/* ==========================================
+   Reset e Base
+   ========================================== */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background-color: var(--color-bg-app);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================
+   Scrollbar — Minimalista
+   ========================================== */
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-light);
+}
+
+/* ==========================================
+   Animações
+   ========================================== */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.3); }
+  50% { box-shadow: 0 0 16px 4px rgba(16, 185, 129, 0.12); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in {
+  animation: slideInLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+/* ==========================================
+   Classes Utilitárias — Design System
+   ========================================== */
+
+/* Card base */
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  border-color: var(--color-border-light);
+  box-shadow: var(--shadow-md);
+}
+
+/* Card sem hover */
+.card-static {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+/* Glass effect premium */
+.glass {
+  background: rgba(24, 24, 27, 0.85);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+/* Gradientes de status */
+.gradient-success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 163, 74, 0.06) 100%);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.gradient-warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(217, 119, 6, 0.06) 100%);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.gradient-danger {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(220, 38, 38, 0.06) 100%);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.gradient-info {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(37, 99, 235, 0.06) 100%);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-bg-card) 25%, var(--color-bg-elevated) 50%, var(--color-bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 100px;
+  text-transform: uppercase;
+}
+
+/* Input base */
+input[type="text"],
+input[type="number"],
+select {
+  background: var(--color-bg-input);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--color-text-primary);
+  font-family: inherit;
+  transition: all 0.15s ease;
+  outline: none;
+  width: 100%;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+input[type="text"]::placeholder {
+  color: var(--color-text-muted);
+}
